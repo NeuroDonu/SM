@@ -762,10 +762,10 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
 
             with gr.Column(scale=0.65):
                 with gr.Row():
-                    swap_button = gr.Button("✨ Swap", variant="primary")
-                    cancel_button = gr.Button("⛔ Cancel")
-                    collect_faces = gr.Button("👨 Collect Faces")
-                    test_swap = gr.Button("🧪 Test Swap")
+                    swap_button = gr.Button("✨ Замена", variant="primary")
+                    cancel_button = gr.Button("⛔ Отмена")
+                    collect_faces = gr.Button("👨 Коллекционирование лиц")
+                    test_swap = gr.Button("🧪 Тест замены")
 
                 with gr.Box() as frame_slider_box:
                     with gr.Row(elem_id="slider_row", equal_height=True):
