@@ -1,13 +1,4 @@
-print(
-"""
-░██████╗░██╗░░░░░░░██╗░█████╗░██████╗░  ███╗░░░███╗██╗░░░██╗██╗░░██╗██╗░░██╗░█████╗░███╗░░░███╗
-██╔════╝░██║░░██╗░░██║██╔══██╗██╔══██╗  ████╗░████║██║░░░██║██║░██╔╝██║░░██║██╔══██╗████╗░████║
-╚█████╗░░╚██╗████╗██╔╝███████║██████╔╝  ██╔████╔██║██║░░░██║█████═╝░███████║███████║██╔████╔██║
-░╚═══██╗░░████╔═████║░██╔══██║██╔═══╝░  ██║╚██╔╝██║██║░░░██║██╔═██╗░██╔══██║██╔══██║██║╚██╔╝██║
-██████╔╝░░╚██╔╝░╚██╔╝░██║░░██║██║░░░░░  ██║░╚═╝░██║╚██████╔╝██║░╚██╗██║░░██║██║░░██║██║░╚═╝░██║
-╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝░░╚═╝╚═╝░░░░░  ╚═╝░░░░░╚═╝░╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝
-"""
-)
+print("Перевод и блокнот для colab сделал NeuroDonu.")
 import os
 import cv2
 import time
@@ -274,7 +265,7 @@ def process(
 
         is_in_range = lambda idx: any([int(rng[0]) <= idx <= int(rng[1]) for rng in frame_selection_ranges]) if use_frame_selection else True
 
-        print("[ Swapping process started ]")
+        print("[ Процесс начат! ]")
 
         def swap_video_func(frame_index):
             if IS_RUNNING:
@@ -305,7 +296,7 @@ def process(
         cap.release()
 
         if IS_RUNNING:
-            print("[ Merging image sequence ]")
+            print("[ Объединение последовательности изображений ]")
             progress(0, desc="Merging image sequence")
             WORKSPACE = output_path
             out_without_audio = output_name + "_without_audio" + ".mp4"
@@ -317,7 +308,7 @@ def process(
             OUTPUT_FILE = destination
 
             if ret:
-                print("[ Merging audio ]")
+                print("[ Объединение аудио ]")
                 progress(0, desc="Merging audio")
                 OUTPUT_FILE = destination
                 out_with_audio = out_without_audio.replace("_without_audio", "")
@@ -330,7 +321,7 @@ def process(
                     os.remove(out_without_audio)
 
             if os.path.exists(temp_path) and not keep_output_sequence:
-                print("[ Removing temporary files ]")
+                print("[ Удаление временных файлов ]")
                 progress(0, desc="Removing temporary files")
                 shutil.rmtree(temp_path)
 
@@ -425,29 +416,28 @@ footer{
 WIDGET_PREVIEW_HEIGHT = 450
 
 with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
-    gr.Markdown("# 🗿 Swap Mukham | Mod by Neurogen v 1.0.0")
-    gr.Markdown("### Продвинутый DeepFake на базе Insightface")
+    gr.Markdown("# Swap Mukhan в переводе от NeuroDonu")
     with gr.Row():
         with gr.Row():
             with gr.Column(scale=0.35):
                 with gr.Tabs():
-                    with gr.TabItem("📄 Input"):
+                    with gr.TabItem("📄 Input data"):
                         swap_condition = gr.Dropdown(
                             gv.FACE_DETECT_CONDITIONS,
-                            info="Choose which face or faces in the target image to swap.",
+                            info="Выберите, какое лицо или лица на целевом изображении нужно поменять местами.",
                             multiselect=False,
                             show_label=False,
                             value=gv.FACE_DETECT_CONDITIONS[0],
                             interactive=True,
                         )
                         age = gr.Number(
-                            value=25, label="Value", interactive=True, visible=False
+                            value=25, label="Значение", interactive=True, visible=False
                         )
 
                         ## ------------------------------ SOURCE IMAGE ------------------------------
 
                         source_image_input = gr.Image(
-                            label="Source face", type="filepath", interactive=True, height=200,
+                            label="Исходное лицо", type="filepath", interactive=True, height=200,
                         )
 
                         ## ------------------------------ SOURCE SPECIFIC ------------------------------
@@ -467,8 +457,8 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                 maximum=2,
                                 value=0.6,
                                 interactive=True,
-                                label="Distance",
-                                info="Lower distance is more similar and higher distance is less similar to the target face.",
+                                label="Расстояние",
+                                info="Меньшее расстояние более похоже, а большее расстояние менее похоже на целевое лицо.",
                             )
 
                         ## ------------------------------ TARGET TYPE ------------------------------
@@ -476,7 +466,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                         with gr.Group():
                             target_type = gr.Radio(
                                 ["Image", "Video", "Directory"],
-                                label="Target Type",
+                                label="Тип цели",
                                 value="Video",
                             )
 
@@ -484,7 +474,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
 
                             with gr.Box(visible=False) as input_image_group:
                                 target_image_input = gr.Image(
-                                    label="Target Image",
+                                    label="Целевое изображение",
                                     interactive=True,
                                     type="filepath",
                                     height=200
@@ -496,14 +486,14 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                 with gr.Column():
                                     video_widget = gr.Text if PREFER_TEXT_WIDGET else gr.Video
                                     video_input = video_widget(
-                                        label="Target Video", interactive=True,
+                                        label="Целевое видео", interactive=True,
                                     )
 
                                     ## ------------------------------ FRAME SELECTION ------------------------------
 
                                     with gr.Accordion("Frame Selection", open=False):
                                         use_frame_selection = gr.Checkbox(
-                                            label="Use frame selection", value=False, interactive=True,
+                                            label="Использовать выбор кадра", value=False, interactive=True,
                                         )
                                         frame_selection_ranges = gr.Numpy(
                                             headers=["Start Frame", "End Frame"],
@@ -517,7 +507,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
 
                             with gr.Box(visible=False) as input_directory_group:
                                 directory_input = gr.Text(
-                                    label="Target Image Directory", interactive=True
+                                    label="Целевой каталог изображений", interactive=True
                                 )
 
                     ## ------------------------------ TAB MODEL ------------------------------
@@ -526,7 +516,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                         with gr.Accordion("Swapper", open=True):
                             with gr.Row():
                                 swap_iteration = gr.Slider(
-                                    label="Swap Iteration",
+                                    label="Итерация замены",
                                     minimum=1,
                                     maximum=4,
                                     value=1,
@@ -534,7 +524,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                     interactive=True,
                                 )
                                 face_scale = gr.Slider(
-                                    label="Face Scale",
+                                    label="Масштаб лица",
                                     minimum=0,
                                     maximum=2,
                                     value=1,
@@ -543,18 +533,18 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                         with gr.Accordion("Detection", open=True):
                             face_detection_condition = gr.Dropdown(
                                 gv.SINGLE_FACE_DETECT_CONDITIONS,
-                                label="Condition",
+                                label="Состояние",
                                 value=gv.DETECT_CONDITION,
                                 interactive=True,
-                                info="This condition is only used when multiple faces are detected on source or specific image.",
+                                info="Это условие используется только в том случае, если на исходном или конкретном изображении обнаружено несколько лиц.",
                             )
                             face_detection_size = gr.Number(
-                                label="Detection Size",
+                                label="Размер обнаружения",
                                 value=gv.DETECT_SIZE,
                                 interactive=True,
                             )
                             face_detection_threshold = gr.Number(
-                                label="Detection Threshold",
+                                label="Порог обнаружения",
                                 value=gv.DETECT_THRESHOLD,
                                 interactive=True,
                             )
@@ -565,13 +555,13 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                         with gr.Row():
                             face_enhancer_name = gr.Dropdown(
                                 gv.FACE_ENHANCER_LIST,
-                                label="Face Enhancer",
+                                label="Усилитель лица",
                                 value="NONE",
                                 multiselect=False,
                                 interactive=True,
                             )
                             face_upscaler_opacity = gr.Slider(
-                                label="Opacity",
+                                label="Непрозрачность",
                                 minimum=0,
                                 maximum=1,
                                 value=1,
@@ -583,12 +573,12 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                             with gr.Group():
                                 with gr.Row():
                                     use_face_parsing_mask = gr.Checkbox(
-                                        label="Enable Face Parsing",
+                                        label="Включить анализ лиц",
                                         value=False,
                                         interactive=True,
                                     )
                                     parse_from_target = gr.Checkbox(
-                                        label="Parse from target",
+                                        label="Анализировать из цели",
                                         value=False,
                                         interactive=True,
                                     )
@@ -596,7 +586,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                     gv.MASK_REGIONS,
                                     value=gv.MASK_REGIONS_DEFAULT,
                                     multiselect=True,
-                                    label="Include",
+                                    label="Включить",
                                     interactive=True,
                                 )
 
@@ -604,7 +594,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                             with gr.Group():
                                 with gr.Row():
                                     crop_top = gr.Slider(
-                                        label="Top",
+                                        label="Верх",
                                         minimum=0,
                                         maximum=511,
                                         value=0,
@@ -612,7 +602,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                         interactive=True,
                                     )
                                     crop_bott = gr.Slider(
-                                        label="Bottom",
+                                        label="Центер",
                                         minimum=0,
                                         maximum=511,
                                         value=511,
@@ -621,7 +611,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                     )
                                 with gr.Row():
                                     crop_left = gr.Slider(
-                                        label="Left",
+                                        label="Лево",
                                         minimum=0,
                                         maximum=511,
                                         value=0,
@@ -629,7 +619,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                         interactive=True,
                                     )
                                     crop_right = gr.Slider(
-                                        label="Right",
+                                        label="Право",
                                         minimum=0,
                                         maximum=511,
                                         value=511,
@@ -639,7 +629,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
 
                         with gr.Row():
                             mask_erode_amount = gr.Slider(
-                                label="Mask Erode",
+                                label="Маска Эрод",
                                 minimum=0,
                                 maximum=1,
                                 value=gv.MASK_ERODE_AMOUNT,
@@ -648,7 +638,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                             )
 
                             mask_blur_amount = gr.Slider(
-                                label="Mask Blur",
+                                label="Маска размытия",
                                 minimum=0,
                                 maximum=1,
                                 value=gv.MASK_BLUR_AMOUNT,
@@ -657,7 +647,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                             )
 
                         use_laplacian_blending = gr.Checkbox(
-                            label="Laplacian Blending",
+                            label="Лапласово смешивание",
                             value=True,
                             interactive=True,
                         )
@@ -666,47 +656,47 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
 
                     with gr.TabItem("📤 Output"):
                         output_directory = gr.Text(
-                            label="Output Directory",
+                            label="Выходной каталог",
                             value=gv.DEFAULT_OUTPUT_PATH,
                             interactive=True,
                         )
                         with gr.Group():
                             output_name = gr.Text(
-                                label="Output Name", value="Result", interactive=True
+                                label="Имя выхода", value="Result", interactive=True
                             )
                             use_datetime_suffix = gr.Checkbox(
-                                label="Suffix date-time", value=True, interactive=True
+                                label="Суффикс даты и времени", value=True, interactive=True
                             )
                         with gr.Accordion("Video settings", open=True):
                             with gr.Row():
                                 sequence_output_format = gr.Dropdown(
                                         ["jpg", "png"],
-                                        label="Sequence format",
+                                        label="Формат последовательности",
                                         value="jpg",
                                         interactive=True,
                                     )
                                 video_quality = gr.Dropdown(
                                     gv.VIDEO_QUALITY_LIST,
-                                    label="Quality",
+                                    label="Качество",
                                     value=gv.VIDEO_QUALITY,
                                     interactive=True
                                 )
                             keep_output_sequence = gr.Checkbox(
-                                label="Keep output sequence", value=False, interactive=True
+                                label="Сохранять последовательность вывода", value=False, interactive=True
                             )
 
                     ## ------------------------------ TAB PERFORMANCE ------------------------------
                     with gr.TabItem("🛠️ Performance"):
                         preview_resolution = gr.Dropdown(
                             gv.RESOLUTIONS,
-                            label="Preview Resolution",
+                            label="Разрешение предварительного просмотра",
                             value="Original",
                             interactive=True,
                         )
                         number_of_threads = gr.Number(
                             step=1,
                             interactive=True,
-                            label="Max number of threads",
+                            label="Максимальное количество потоков",
                             value=gv.MAX_THREADS,
                             minimum=1,
                         )
@@ -715,7 +705,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                 with gr.Row():
                                     face_analyser_device = gr.Radio(
                                         DEVICE_LIST,
-                                        label="Face detection & recognition",
+                                        label="Обнаружение и распознавание лиц",
                                         value=DEVICE,
                                         interactive=True,
                                     )
@@ -723,7 +713,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                 with gr.Row():
                                     face_swapper_device = gr.Radio(
                                         DEVICE_LIST,
-                                        label="Face swapper",
+                                        label="Смена лица",
                                         value=DEVICE,
                                         interactive=True,
                                     )
@@ -731,7 +721,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                 with gr.Row():
                                     face_parser_device = gr.Radio(
                                         DEVICE_LIST,
-                                        label="Face parsing",
+                                        label="Парсинг лиц",
                                         value=DEVICE,
                                         interactive=True,
                                     )
@@ -739,7 +729,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                 with gr.Row():
                                     face_upscaler_device = gr.Radio(
                                         DEVICE_LIST,
-                                        label="Face upscaler",
+                                        label="Масштабирование лица",
                                         value=DEVICE,
                                         interactive=True,
                                     )
@@ -783,7 +773,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                             "Set Range", interactive=True, elem_id="refresh_slider"
                         )
                         frame_slider = gr.Slider(
-                            label="Frame",
+                            label="Рамка",
                             minimum=0,
                             maximum=1,
                             value=0,
@@ -798,14 +788,14 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                     with gr.TabItem("Preview"):
 
                         preview_image = gr.Image(
-                            label="Preview", type="numpy", interactive=False, height=WIDGET_PREVIEW_HEIGHT,
+                            label="Предварительный просмотр", type="numpy", interactive=False, height=WIDGET_PREVIEW_HEIGHT,
                         )
 
                         preview_video = gr.Video(
-                            label="Output", interactive=False, visible=False, height=WIDGET_PREVIEW_HEIGHT,
+                            label="Выход", interactive=False, visible=False, height=WIDGET_PREVIEW_HEIGHT,
                         )
                         preview_enabled_text = gr.Markdown(
-                            "Disable paint foreground to preview !", visible=False
+                            "Отключите рисование переднего плана для предварительного просмотра!", visible=False
                         )
                         with gr.Row():
                             output_directory_button = gr.Button(
@@ -833,9 +823,9 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                             with gr.Row():
                                 with gr.Row():
                                     use_foreground_mask = gr.Checkbox(
-                                    label="Use foreground mask", value=False, interactive=True)
+                                    label="Использовать маску переднего плана", value=False, interactive=True)
                                 fg_mask_softness = gr.Slider(
-                                    label="Mask Softness",
+                                    label="Маска Мягкости",
                                     minimum=0,
                                     maximum=200,
                                     value=1,
@@ -845,7 +835,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                                 add_fg_mask_btn = gr.Button("Add", interactive=True)
                                 del_fg_mask_btn = gr.Button("Del", interactive=True)
                             img_fg_mask = gr.Image(
-                                label="Paint Mask",
+                                label="Маска краски",
                                 tool="sketch",
                                 interactive=True,
                                 type="numpy",
@@ -856,7 +846,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
 
                     with gr.TabItem("Collected Faces"):
                         collected_faces = gr.Gallery(
-                            label="Faces",
+                            label="Лица",
                             show_label=False,
                             elem_id="gallery",
                             columns=[6], rows=[6], object_fit="contain", height=WIDGET_PREVIEW_HEIGHT,
@@ -868,9 +858,9 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
         gr.HTML(
             """
             <div style="display: flex; flex-direction: row; justify-content: center;">
-                <h3 style="margin-right: 10px;"><a href="https://boosty.to/neurogen" style="text-decoration: none;">🤝 Поддержать автора (Boosty)</a></h3>
                 <h3 style="margin-right: 10px;"><a href="https://github.com/harisreedhar/Swap-Mukham" style="text-decoration: none;">👨‍💻 Первоисточник</a></h3>
-                <h3><a href="https://t.me/neurogen_news" style="text-decoration: none;">🤗 Telegram канал</a></h3>
+                <h3><a href="https://t.me/DERKARTA" style="text-decoration: none;">🤗 Telegram канал</a></h3>
+                <h3>Перевод сделал NeuroDonu</h3>
             </div>
             """
         )
@@ -925,7 +915,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
 
     def on_set_slider_range(video_path):
         if video_path is None or not os.path.exists(video_path):
-            gr.Info("Check video path")
+            gr.Info("Проверьте путь к видео")
         else:
             try:
                 cap = cv2.VideoCapture(video_path)
@@ -937,9 +927,9 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                     return gr.Slider.update(
                         minimum=0, maximum=total_frames, value=0, interactive=True
                     )
-                gr.Info("Error fetching video")
+                gr.Info("Ошибка при загрузке видео.")
             except:
-                gr.Info("Error fetching video")
+                gr.Info("Ошибка при загрузке видео.")
 
     set_slider_range_event = set_slider_range_btn.click(
         on_set_slider_range,
@@ -987,7 +977,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
                 alpha_rgb = cv2.cvtColor(mask, cv2.COLOR_BGRA2RGB)
                 alpha_rgb = cv2.blur(alpha_rgb, (softness, softness))
                 FOREGROUND_MASK_DICT[frame_index] = alpha_rgb.astype("float32") / 255.0
-                gr.Info(f"saved mask index {frame_index}")
+                gr.Info(f"сохраненный индекс маски {frame_index}")
 
     add_foreground_mask_event = add_fg_mask_btn.click(
         fn=add_foreground_mask,
@@ -1002,7 +992,7 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
     def delete_foreground_mask(frame_index):
         if frame_index in FOREGROUND_MASK_DICT.keys():
             FOREGROUND_MASK_DICT.pop(frame_index)
-            gr.Info(f"Deleted mask index {frame_index}")
+            gr.Info(f"Удален индекс маски {frame_index}")
 
     del_custom_mask_event = del_fg_mask_btn.click(
         fn=delete_foreground_mask, inputs=[frame_slider]
@@ -1015,11 +1005,11 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
 
     def get_collected_faces(image):
         if image is not None:
-            gr.Info(f"Collecting faces...")
+            gr.Info(f"Собираем лица...")
             faces = SWAP_MUKHAM.collect_heads(image)
             COLLECTED_FACES.extend(faces)
             yield COLLECTED_FACES
-            gr.Info(f"Collected {len(faces)} faces")
+            gr.Info(f"Собрали эти {len(faces)} лица")
 
     collect_faces.click(get_collected_faces, inputs=[preview_image], outputs=[collected_faces])
 
@@ -1099,8 +1089,8 @@ with gr.Blocks(css=css, theme=gr.themes.Default()) as interface:
     def stop_running():
         global IS_RUNNING
         IS_RUNNING = False
-        print("[ Process cancelled ]")
-        gr.Info("Process cancelled")
+        print("[ Процесс отменен ]")
+        gr.Info("Процесс отменен")
 
     cancel_button.click(
         fn=stop_running,
@@ -1122,6 +1112,6 @@ clear_temp_folder(folder)
 
 if __name__ == "__main__":
     if gv.USE_COLAB:
-        print("Running in colab mode")
+        print("Запуск в режиме Colab")
 
     interface.queue(concurrency_count=2, max_size=20).launch(share=gv.USE_COLAB,inbrowser=user_args.autolaunch)
